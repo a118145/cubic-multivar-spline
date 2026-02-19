@@ -7,3 +7,6 @@ def test_version_is_string():
 
 def test_example_function():
     assert example_function(4) == 16
+
+test_example_function()
+test_version_is_string()
