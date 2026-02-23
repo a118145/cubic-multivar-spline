@@ -1,1 +1,2 @@
 cubic_multivar_spline
+matplotlib == 3.10.0
