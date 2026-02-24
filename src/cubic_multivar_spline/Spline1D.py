@@ -64,8 +64,8 @@ class Spline1D:
                     col = i * (self._n-2)
                     self._matrix[-2+i, col:col+5] = np.array([1, -4, 6, -4, 1])
                     
-    
-    def _phi(self, t: float | np.ndarray) -> float | np.ndarray:
+    @staticmethod
+    def _phi(t: float | np.ndarray) -> float | np.ndarray:
         t_abs = np.abs(t)
         result = np.zeros_like(t, dtype=float)
         
@@ -81,7 +81,8 @@ class Spline1D:
         
         return result if isinstance(t, np.ndarray) else float(result)
     
-    def _dphi_dt(self, t: float | np.ndarray) -> float | np.ndarray:
+    @staticmethod
+    def _dphi_dt(t: float | np.ndarray) -> float | np.ndarray:
         t_abs = np.abs(t)
         t_sign = np.sign(t)
         result = np.zeros_like(t, dtype=float)
@@ -98,7 +99,8 @@ class Spline1D:
         
         return result if isinstance(t, np.ndarray) else float(result)
     
-    def _d2phi_dt2(self, t: float | np.ndarray) -> float | np.ndarray:
+    @staticmethod
+    def _d2phi_dt2(t: float | np.ndarray) -> float | np.ndarray:
         t_abs = np.abs(t)
         result = np.zeros_like(t, dtype=float)
         
@@ -114,7 +116,8 @@ class Spline1D:
         
         return result if isinstance(t, np.ndarray) else float(result)
     
-    def _d3phi_dt3(self, t: float | np.ndarray) -> float | np.ndarray:
+    @staticmethod
+    def _d3phi_dt3(t: float | np.ndarray) -> float | np.ndarray:
         t_abs = np.abs(t)
         t_sign = np.sign(t)
         result = np.zeros_like(t, dtype=float)
@@ -139,7 +142,7 @@ class Spline1D:
         # print('m', m)
         t = ((x-self._a)/self._h-(np.arange(l+1,m+1)-2))
         # print('t', t)
-        return np.sum(self._coeff[l:m]*self._phi(t)), np.sum(self._coeff[l:m]*self._dphi_dt(t)/self._h), np.sum(self._coeff[l:m]*self._d2phi_dt2(t)/self._h**2), np.sum(self._coeff[l:m]*self._d3phi_dt3(t)/self._h**3)
+        return np.sum(self._coeff[l:m]*Spline1D._phi(t)), np.sum(self._coeff[l:m]*Spline1D._dphi_dt(t)/self._h), np.sum(self._coeff[l:m]*Spline1D._d2phi_dt2(t)/self._h**2), np.sum(self._coeff[l:m]*Spline1D._d3phi_dt3(t)/self._h**3)
 
     def eval_spline(self, x: float | np.ndarray) -> Tuple[float, float, float, float] | Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         x = np.atleast_1d(x)
@@ -166,16 +169,20 @@ class Spline1D:
                 coeffs = self._coeff[coeff_idx[valid_mask]]
                 
                 # Add contributions
-                spline_val[valid_mask] += coeffs * self._phi(t_vals)
-                spline_d1[valid_mask] += coeffs * self._dphi_dt(t_vals) / self._h
-                spline_d2[valid_mask] += coeffs * self._d2phi_dt2(t_vals) / self._h**2
-                spline_d3[valid_mask] += coeffs * self._d3phi_dt3(t_vals) / self._h**3
+                spline_val[valid_mask] += coeffs * Spline1D._phi(t_vals)
+                spline_d1[valid_mask] += coeffs * Spline1D._dphi_dt(t_vals) / self._h
+                spline_d2[valid_mask] += coeffs * Spline1D._d2phi_dt2(t_vals) / self._h**2
+                spline_d3[valid_mask] += coeffs * Spline1D._d3phi_dt3(t_vals) / self._h**3
         
         # Return appropriate type based on input
         if len(x) == 1:
             return float(spline_val[0]), float(spline_d1[0]), float(spline_d2[0]), float(spline_d3[0])
         else:
             return spline_val, spline_d1, spline_d2, spline_d3
+
+    @property
+    def coeff(self):
+        return self._coeff
 
 if __name__ == '__main__':
     interval = (0.0, 1.0)
