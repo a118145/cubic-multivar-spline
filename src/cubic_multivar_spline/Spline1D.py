@@ -9,6 +9,7 @@ class Spline1D:
 
     def __init__(self, interval: Tuple[float, float], yv: np.ndarray, boundary_condition_type: Tuple[str, str] = ("second_derivative", "second_derivative"), boundary_condition_value: Tuple[float, float] = (0.0, 0.0) ) -> None:
         self._interval = interval
+        print("Spline1D interval:", interval)
         self._yv = yv
         if "periodic" in boundary_condition_type:
             self._boundary_condition_type = ("periodic", "periodic")
