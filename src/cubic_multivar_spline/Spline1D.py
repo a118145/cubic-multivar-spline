@@ -9,7 +9,7 @@ class Spline1D:
 
     def __init__(self, interval: Tuple[float, float], yv: np.ndarray, boundary_condition_type: Tuple[str, str] = ("second_derivative", "second_derivative"), boundary_condition_value: Tuple[float, float] = (0.0, 0.0) ) -> None:
         self._interval = interval
-        print("Spline1D interval:", interval)
+        # print("Spline1D interval:", interval)
         self._yv = yv
         if "periodic" in boundary_condition_type:
             self._boundary_condition_type = ("periodic", "periodic")
@@ -27,11 +27,6 @@ class Spline1D:
         self._add_bc_to_matrix_rhs()
 
         self._coeff = np.linalg.solve(self._matrix, self._rhs)
-
-
-    def _tridiag(self) -> np.ndarray:
-        return np.diag(4*np.ones(self._n), 0) + np.diag(np.ones(self._n-1), 1) + np.diag(np.ones(self._n-1), -1)
-
     
     def _base_diag(self) -> np.ndarray:
         tmp_diag = np.diag(np.ones(self._n+3), 0) + np.diag(4*np.ones(self._n+2), 1) + np.diag(np.ones(self._n+1), 2)
@@ -191,7 +186,6 @@ if __name__ == '__main__':
     bc = ("periodic", "periodic")
     bc_value = (10.0, 0.0)
     spline = Spline1D(interval, yv, bc, bc_value)
-    print(spline._tridiag())
     print(spline._matrix)
     print(spline._rhs)
     print(spline._coeff)

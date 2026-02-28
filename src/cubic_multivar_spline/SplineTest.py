@@ -31,7 +31,7 @@ class Spline2D:
         self._boundary_condition_type = boundary_condition_type
         self._boundary_condition_value = boundary_condition_value
         # print()
-        _tmp_coeff = Spline2D.recursive_spline(
+        _tmp_coeff = Spline2D.recursive_spline_testing(
             interval = self._interval, 
             yv = self._yv, 
             boundary_condition_type = self._boundary_condition_type, 
@@ -96,6 +96,72 @@ class Spline2D:
             tmp_spline = Spline1D(interval[0], ci_star[i::ci_star_len], boundary_condition_type[0], boundary_condition_value[0])
             ci[i*ci_len:(i+1)*ci_len] = tmp_spline.coeff
         return ci
+
+    @staticmethod
+    def recursive_spline_testing(
+        interval: Tuple[Tuple[float, float, int]], 
+        yv: np.ndarray, 
+        boundary_condition_type: Tuple[Tuple[str, str]], 
+        boundary_condition_value: Tuple[Tuple[float, float]]
+        ) -> np.ndarray:
+        print('##########')
+        print(f"Level {len(interval)}")
+        print(interval)
+        if len(interval) is 1:
+            print("1D spline")
+            # lowest level of recursion reached -> 1D spline
+            # print(boundary_condition_type[0])
+            # print(boundary_condition_value[0])
+            coeff = Spline1D(interval[0], yv, boundary_condition_type[0], boundary_condition_value[0]).coeff 
+            str_coeff = ['1' for i in range(len(coeff))]
+            return coeff
+
+        ci_star_size = 1
+        ci_star_len = 1
+        ci_size = 1
+        ci_len = 1
+        num_recur_coords = 1
+        for i in range(len(interval)):
+            if i != 0:
+                ci_star_size *= (interval[i][2] + 2)
+                ci_star_len *= (interval[i][2] + 2)
+                num_recur_coords *= interval[i][2]
+            else:
+                ci_star_size *= interval[i][2]
+            ci_len *= (interval[i][2] + 2)
+            ci_size *= (interval[i][2] + 2)
+        ci_len = interval[0][2] + 2
+        
+        print('ci_star_size', ci_star_size)
+        print('ci_star_len', ci_star_len)
+        print('ci_size', ci_size)
+        print('ci_len', ci_len)
+        print('num_recur_coords', num_recur_coords)
+        print('ci_size // ci_star_len', ci_size // ci_star_len)
+
+        str_ci_star = [] * ci_star_size
+        ci_star = np.zeros(ci_star_size)
+        for i in range(interval[0][2]):
+            ci_star[i*ci_star_len:(i+1)*ci_star_len] = Spline2D.recursive_spline(
+                interval[1:], 
+                yv[i*num_recur_coords:(i+1)*num_recur_coords],
+                boundary_condition_type[1:], 
+                boundary_condition_value[1:]
+            )
+        print('##########')
+        print(f"Level {len(interval)}")
+        ci = np.zeros(ci_size)
+        str_ci = [] * ci_size
+        tmp_str = ['2' for _ in range(ci_star_len)]
+        for i in range(ci_star_len): #range(ci_size//ci_star_len):
+            tmp_spline = Spline1D(interval[0], ci_star[i::ci_star_len], boundary_condition_type[0], boundary_condition_value[0])
+            print(tmp_spline.coeff.size)
+            print(ci.size, i, ci_len)
+            ci[i*ci_len:(i+1)*ci_len] = tmp_spline.coeff
+            # ci[i::ci_star_len] = tmp_spline.coeff
+            # str_ci[i*ci_len:(i+1)*ci_len] = [tmp_str[i] + s for s in str_ci_star[i::ci_star_len]]
+        print('############')
+        return ci
         
     @property
     def coeff(self) -> np.ndarray:
@@ -124,14 +190,14 @@ if __name__ == "__main__":
         for i in range(len(x)):
             for j in range(len(y)):
                 pointer = len(y)*i + j
-                tf[pointer] = 2*x[j]**2 + y[i]**3
+                tf[pointer] = 2*x[i]**2 + y[j]**3
                 coords[pointer] = np.array([x[i], y[j]])
         return tf, coords
 
     n = 11 # number of points in each direction
     xvals = np.linspace(0, 1, n)
     yvals = np.linspace(0, 1, n)
-    xgrid, ygrid = np.meshgrid(xvals, yvals)
+    xgrid, ygrid = np.meshgrid(xvals, yvals, indexing='ij')
     zvals, coords = test_function(xvals, yvals)
     zgrid = np.reshape(zvals, (n,n))
 
@@ -155,7 +221,7 @@ if __name__ == "__main__":
     z_spline_eval = np.zeros((n_spline_eval, n_spline_eval))
     for i in range(n_spline_eval):
         for j in range(n_spline_eval):
-            z_spline_eval[j,i] = spline.eval_spline(x_spline_eval[i], y_spline_eval[j])
+            z_spline_eval[i,j] = spline.eval_spline(x_spline_eval[i], y_spline_eval[j])
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')

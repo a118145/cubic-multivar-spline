@@ -3,7 +3,7 @@
 A tiny placeholder package for cubic multivariate spline utilities.
 """
 from .Spline1D import Spline1D
-from .Spline2D import Spline2D
+from .Spline import Spline
 
 __version__ = "0.1.0"
 
@@ -11,7 +11,7 @@ __all__ = [
     "version", 
     "example_function", 
     "Spline1D", 
-    "Spline2D"
+    "Spline"
 ]
 
 version = __version__
