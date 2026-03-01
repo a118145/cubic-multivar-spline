@@ -6,6 +6,25 @@ from cubic_multivar_spline.SplineTest import eval_spline_ai
 from itertools import product as iproduct
 
 class Spline:
+    """
+    Multidimensional cubic spline interpolation using tensor product B-splines.
+    
+    This class implements multidimensional cubic spline interpolation by constructing
+    tensor products of 1D B-spline basis functions. The interpolation
+    supports various boundary conditions and can evaluate function values,
+    gradients, and Hessians.
+    
+    The implementation uses a recursive approach to compute coefficients
+    and a vectorized evaluation method for efficiency.
+    
+    Attributes:
+        _ndim: Number of dimensions
+        _interval: List of (start, end, n_points) tuples for each dimension
+        _boundary_condition_type: Boundary conditions for each dimension
+        _boundary_condition_value: Boundary condition values for each dimension
+        _coeff: Multidimensional array of spline coefficients
+        _knots: List of knot vectors for each dimension
+    """
 
     def __init__(
         self, 
@@ -14,6 +33,30 @@ class Spline:
         boundary_condition_type: Tuple[Tuple[str, str]] = None, 
         boundary_condition_value: Tuple[Tuple[float, float]] = None 
         ) -> None:
+        """
+        Initialize a multidimensional cubic spline interpolator.
+        
+        Parameters
+        ----------
+        interval : Tuple[Tuple[float, float, int]]
+            For each dimension: (start, end, n_points) defining the domain
+            and number of interpolation points
+        yv : np.ndarray
+            Flattened array of function values at all grid points.
+            Length must equal product of n_points from all dimensions.
+        boundary_condition_type : Tuple[Tuple[str, str]], optional
+            Boundary conditions for each dimension. Each tuple contains
+            conditions for (start, end) of that dimension.
+            Default: all dimensions use "not-a-knot"
+        boundary_condition_value : Tuple[Tuple[float, float]], optional
+            Values for boundary conditions. Default: all zeros.
+            
+        Raises
+        ------
+        ValueError
+            If interval format is incorrect or if number of values
+            doesn't match the grid specification.
+        """
 
         num_vals = 1
         for i in range(len(interval)):
@@ -25,16 +68,16 @@ class Spline:
 
         self._ndim = len(interval)
         self._interval = interval
-        self._h = np.zeros(self._ndim)
-        self._a = np.zeros(self._ndim)
-        self._n_elems = np.zeros(self._ndim)
+        # self._h = np.zeros(self._ndim)
+        # self._a = np.zeros(self._ndim)
+        # self._n_elems = np.zeros(self._ndim)
         self._knots = [np.linspace(interval[k][0], interval[k][1], interval[k][2]) for k in range(self._ndim)]
-        for i in range(self._ndim):
-            self._h[i] = (interval[i][1] - interval[i][0]) / (interval[i][2]-1)
-            self._a[i] = interval[i][0]
-            self._n_elems[i] = interval[i][2] - 1
+        # for i in range(self._ndim):
+            # self._h[i] = (interval[i][1] - interval[i][0]) / (interval[i][2]-1)
+            # self._a[i] = interval[i][0]
+            # self._n_elems[i] = interval[i][2] - 1
         
-        self._yv = yv
+        # self._yv = yv
         if boundary_condition_type is None:
             boundary_condition_type = tuple(("not-a-knot", "not-a-knot") for _ in range(self._ndim))
         if boundary_condition_value is None:
@@ -42,14 +85,14 @@ class Spline:
         self._boundary_condition_type = boundary_condition_type
         self._boundary_condition_value = boundary_condition_value
         
-        _tmp_coeff,_ = Spline.recursive_spline(
+        _tmp_coeff = Spline.recursive_spline(
             interval = self._interval, 
-            yv = self._yv, 
+            yv = yv, 
             boundary_condition_type = self._boundary_condition_type, 
             boundary_condition_value = self._boundary_condition_value)
         # _tmp_coeff = Spline.recursive_spline_test(
         #     interval = self._interval, 
-        #     yv = self._yv, 
+        #     yv = yv, 
         #     boundary_condition_type = self._boundary_condition_type, 
         #     boundary_condition_value = self._boundary_condition_value)
         self._coeff_shape = tuple([inter[2] + 2 for inter in interval])
@@ -85,6 +128,29 @@ class Spline:
         boundary_condition_type: Tuple[Tuple[str, str]], 
         boundary_condition_value: Tuple[Tuple[float, float]]
         ) -> np.ndarray:
+        """
+        Recursively compute multidimensional spline coefficients.
+        
+        Uses a recursive approach to compute tensor product spline coefficients.
+        For each dimension, 1D splines are computed along the other
+        dimensions, then combined using another 1D spline.
+        
+        Parameters
+        ----------
+        interval : Tuple[Tuple[float, float, int]]
+            Intervals for remaining dimensions
+        yv : np.ndarray
+            Function values for remaining dimensions
+        boundary_condition_type : Tuple[Tuple[str, str]]
+            Boundary conditions for remaining dimensions
+        boundary_condition_value : Tuple[Tuple[float, float]]
+            Boundary condition values for remaining dimensions
+            
+        Returns
+        -------
+        np.ndarray
+            Flattened array of multidimensional spline coefficients
+        """
         # print('##########')
         # print(f"Level {len(interval)}")
         # print(interval)
@@ -138,6 +204,16 @@ class Spline:
         
     @property
     def coeff(self) -> np.ndarray:
+        """
+        Get multidimensional spline coefficients.
+        
+        Returns
+        -------
+        np.ndarray
+            Multidimensional array of spline coefficients with shape
+            (n1+2, n2+2, ..., nd+2) where ni is the number
+            of points in dimension i
+        """
         return self._coeff
 
     # def eval_spline_old(self, x: float, y: float) -> Tuple[float, float, float, float]:
@@ -240,13 +316,26 @@ class Spline:
     """        
     def _find_span_and_local(self, x_1d, knots_1d):
         """
-        For each point in x_1d: find the knot span index and the
-        local parameter t in [0, 1).
-
+        Find knot span index and local parameter for 1D evaluation.
+        
+        For each evaluation point, determines which knot span it falls in
+        and computes the local parameter t in [0, 1) within that span.
+        
+        Parameters
+        ----------
+        x_1d : np.ndarray
+            1D array of evaluation points
+        knots_1d : np.ndarray
+            Knot vector for the dimension
+            
         Returns
         -------
-        idx : (N,) int   – Index of the left knot in the span
-        t   : (N,) float – local parameter
+        idx : np.ndarray
+            Index of left knot in span for each point of shape (N,)
+        t : np.ndarray
+            Local parameter in [0, 1) for each point of shape (N,)
+        h : np.ndarray
+            Knot spacing for each span of shape (N,)
         """
         # Clamp points to the valid range
         knots_1d = np.asarray(knots_1d)
@@ -263,20 +352,36 @@ class Spline:
 
     def eval_spline(self, x):
         """
-        Evaluates the multidimensional spline and its derivatives.
-
+        Evaluate multidimensional spline and its derivatives.
+        
+        Computes spline values, gradients, and Hessians at specified evaluation
+        points using a vectorized tensor product approach. Based on the
+        methodology from DOI 10.1007/s10614-007-9092-4, Section 3.2.
+        
         Parameters
         ----------
-        x      : array (N, d)  – Evaluation points
-
+        x : np.ndarray
+            Evaluation points of shape (N, d) where N is number of points
+            and d is number of dimensions
+            
         Returns
         -------
-        f    : (N,)      – Function values
-        grad : (N, d)    – Gradient
-        hess : (N, d, d) – Hessian matrix
+        f : np.ndarray
+            Function values at evaluation points, shape (N,)
+        grad : np.ndarray
+            Gradient vectors at evaluation points, shape (N, d)
+        hess : np.ndarray
+            Hessian matrices at evaluation points, shape (N, d, d)
+            
+        Notes
+        -----
+        The evaluation uses a vectorized approach that efficiently computes
+        contributions from all active basis functions (up to 4^d per point).
         """
         x = np.atleast_2d(x)
-        N, d = x.shape
+        d = self._ndim
+        x = np.reshape(x, (-1, d))
+        N, _ = x.shape
         C = self._coeff
 
         # ------------------------------------------------------------------ #
