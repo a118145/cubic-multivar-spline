@@ -2,6 +2,7 @@ import numpy as np
 from typing import Tuple
 import matplotlib.pyplot as plt
 from cubic_multivar_spline.Spline1D import Spline1D
+from cubic_multivar_spline.spline_eval import eval_spline as eval_spline_ai
 
 class Spline2D:
 
@@ -157,8 +158,8 @@ class Spline2D:
             tmp_spline = Spline1D(interval[0], ci_star[i::ci_star_len], boundary_condition_type[0], boundary_condition_value[0])
             print(tmp_spline.coeff.size)
             print(ci.size, i, ci_len)
-            ci[i*ci_len:(i+1)*ci_len] = tmp_spline.coeff
-            # ci[i::ci_star_len] = tmp_spline.coeff
+            # ci[i*ci_len:(i+1)*ci_len] = tmp_spline.coeff
+            ci[i::ci_star_len] = tmp_spline.coeff
             # str_ci[i*ci_len:(i+1)*ci_len] = [tmp_str[i] + s for s in str_ci_star[i::ci_star_len]]
         print('############')
         return ci
@@ -207,24 +208,38 @@ if __name__ == "__main__":
     spline = Spline2D(
         interval=((0, 1, n), (0, 1, n)),
         yv=zvals,
-        boundary_condition_type=(("first_derivative", "first_derivative"), ("not-a-knot", "not-a-knot")),
-        boundary_condition_value=((0.0, 0.0), (0.0, 0.0))
+        boundary_condition_type=(("not-a-knot", "not-a-knot"), ("first_derivative", "first_derivative")),
+        boundary_condition_value=((0.0, 0.0), (0.0, -100.0))
     )
-    # print(spline.coeff)
-    print(spline.eval_spline(0.5, 0.59))
-    print(test_function(np.array([0.5]), np.array([0.59])))
+
+    # 2D-Beispiel: 5 Stützstellen → 7 Koeffizienten pro Richtung
+    n_nodes = [11, 11]
+    shape = tuple(n + 2 for n in n_nodes)            # (13, 13)
+    ci = np.random.randn(np.prod(shape))
+    knots = [np.linspace(0, 1, n_nodes[k]) for k in range(2)]
+
+    result = eval_spline_ai([[0.5, 0.59]], spline.coeff, knots, shape)
+    print('Claude function:', result)
+
+
+    print('Own function:', spline.eval_spline(0.5, 0.59))
+    print('Test function:', test_function(np.array([0.5]), np.array([0.59])))
     # print(coords)
     n_spline_eval = 10
     x_spline_eval = np.linspace(0, 1, n_spline_eval)
     y_spline_eval = np.linspace(0, 1, n_spline_eval)
-    x_spline_eval_grid, y_spline_eval_grid = np.meshgrid(x_spline_eval, y_spline_eval)
+    x_spline_eval_grid, y_spline_eval_grid = np.meshgrid(x_spline_eval, y_spline_eval, indexing='ij')
     z_spline_eval = np.zeros((n_spline_eval, n_spline_eval))
     for i in range(n_spline_eval):
         for j in range(n_spline_eval):
             z_spline_eval[i,j] = spline.eval_spline(x_spline_eval[i], y_spline_eval[j])
+    z_spline_eval_ai, _, _ = eval_spline_ai(np.concatenate([np.reshape(x_spline_eval_grid, (-1, 1)), np.reshape(y_spline_eval_grid, (-1, 1))], axis=1), spline.coeff, knots, shape)
+    print(z_spline_eval_ai.shape)
+    z_spline_eval_ai = np.reshape(z_spline_eval_ai, (n_spline_eval, n_spline_eval))
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_surface(xgrid, ygrid, zgrid)
     ax.plot_surface(x_spline_eval_grid, y_spline_eval_grid, z_spline_eval)
+    ax.plot_surface(x_spline_eval_grid, y_spline_eval_grid, z_spline_eval_ai)
     plt.show()
