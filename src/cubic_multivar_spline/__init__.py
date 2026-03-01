@@ -10,21 +10,9 @@ __version__ = "0.1.0"
 
 __all__ = [
     "version", 
-    "example_function", 
     "Spline1D", 
     "Spline",
     "eval_spline"
 ]
 
 version = __version__
-
-def example_function(x):
-    """Example placeholder function.
-
-    Parameters
-    - x: numeric
-
-    Returns
-    - x squared
-    """
-    return x * x
