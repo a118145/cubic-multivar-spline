@@ -12,7 +12,7 @@ setup(
     long_description = long_description,
     long_description_content_type = "text/markdown",
     license = "MIT License",
-    author = "a118145",
+    author = "A. C. Feldkamp",
     author_email = "",
     url = "",
     classifiers =[
