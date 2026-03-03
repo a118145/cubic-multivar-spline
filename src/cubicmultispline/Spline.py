@@ -194,7 +194,10 @@ class Spline:
         # print(f"Level {len(interval)}")
         ci = np.zeros(ci_size)
         for i in range(ci_star_len): #range(ci_size//ci_star_len):
-            tmp_spline = Spline1D(interval[0], ci_star[i::ci_star_len], boundary_condition_type[0], boundary_condition_value[0])
+            # scaling of boundary condition values needed due to more basis functions per level
+            factor = 1/(6**(len(interval)-1))
+            new_bc_vals = tuple([boundary_condition_value[0][0]*factor, boundary_condition_value[0][1]*factor])
+            tmp_spline = Spline1D(interval[0], ci_star[i::ci_star_len], boundary_condition_type[0], new_bc_vals)
             # print(tmp_spline.coeff.size)
             # print(ci.size, i, ci_len)
             # ci[i*ci_len:(i+1)*ci_len] = tmp_spline.coeff
