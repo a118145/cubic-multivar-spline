@@ -1,5 +1,5 @@
 # cubicmultispline
-Library for cubic, multivariate spline interpolation from samples with arbitrary boundary conditions for each dimension.
+Library for cubic, **multivariate spline interpolation** from samples with **arbitrary boundary conditions for each dimension**.
 
 ## Contents
 
@@ -9,8 +9,6 @@ Library for cubic, multivariate spline interpolation from samples with arbitrary
     - [Data preparation](#data-preparation)
     - [Spline generation and inspection](#spline-generation-and-inspection)
 - [Further examples](#further-examples)
-    - [demo_first-second-peri.py](tests/demo_first-second-peri.py)
-    - [demo_first-second-3d.py](tests/demo_first-second-3d.py)
 - [License](#license)
 
 ## Overview
@@ -20,7 +18,7 @@ This library implements the recursive algorithm by [Habermann and Kindermann](ht
 3. second order (natural)
 4. periodic 
 
-Additionally, the library provides an efficient function `eval_spline` to evaluate the spline at arbitrary points in the domain.
+Additionally, the library provides an efficient function `eval_spline` to evaluate the spline at arbitrary points inside the domain.
 
 ## Installation
 
