@@ -1,0 +1,37 @@
+from setuptools import find_packages, setup
+
+with open("README.md", "r") as f:
+    long_description = f.read()
+
+setup(
+    name = "cubicmultispline",
+    version = "0.1.0",
+    description = "Cubic multivariate spline utilities",
+    package_dir={"": "src"},
+    packages = find_packages(where="src"),
+    long_description = long_description,
+    long_description_content_type = "text/markdown",
+    license = "Apache Software License 2.0",
+    author = "a118145",
+    author_email = "",
+    url = "",
+    classifiers =[
+        "Programming Language :: Python :: 3.12",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires = ">=3.8",
+    install_requires =[
+        "numpy>=2.4",
+        "scipy>=1.12",
+    ],
+    extras_require={
+        "dev": [
+            "twine>=6.2",
+            "setuptools>=82.0.0",
+            "matplotlib>=3.10.0",
+        ]
+    }
+    [options.packages.find]
+    where = src
+)
