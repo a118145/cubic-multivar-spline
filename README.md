@@ -1,2 +1,2 @@
-# cubic-multivar-spline
+# cubicmultispline
 Library for cubic, multivariate spline interpolation.

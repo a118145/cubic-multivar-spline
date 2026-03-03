@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import cubic_multivar_spline as spl
+import cubicmultispline as spl
 
 def test_function(x: np.array, y: np.array) -> np.array:
     tf = np.zeros(len(x)*len(y))

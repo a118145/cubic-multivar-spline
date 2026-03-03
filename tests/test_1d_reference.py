@@ -1,7 +1,7 @@
 from test_functions import test_function_1 as test_function
 import numpy as np
-from cubic_multivar_spline.Spline1D import Spline1D
-from cubic_multivar_spline.Spline import Spline
+from cubicmultispline.Spline1D import Spline1D
+from cubicmultispline.Spline import Spline
 import matplotlib.pyplot as plt
 
 """

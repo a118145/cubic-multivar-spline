@@ -5,19 +5,19 @@ with open("README.md", "r") as f:
 
 setup(
     name = "cubicmultispline",
-    version = "0.1.0",
+    version = "0.1.1",
     description = "Cubic multivariate spline utilities",
     package_dir={"": "src"},
     packages = find_packages(where="src"),
     long_description = long_description,
     long_description_content_type = "text/markdown",
-    license = "Apache Software License 2.0",
+    license = "MIT License",
     author = "a118145",
     author_email = "",
     url = "",
     classifiers =[
         "Programming Language :: Python :: 3.12",
-        "License :: OSI Approved :: Apache Software License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     python_requires = ">=3.8",
@@ -31,7 +31,5 @@ setup(
             "setuptools>=82.0.0",
             "matplotlib>=3.10.0",
         ]
-    }
-    [options.packages.find]
-    where = src
+    },
 )
