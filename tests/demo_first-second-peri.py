@@ -11,7 +11,7 @@ Preparing dummy data
 """
 
 # shape of the data -> number of points in each dimension 
-shape = (10, 11)
+shape = (11, 9)
 # ranges of the data -> [min, max] for each dimension       
 ranges = [ 
     [0, 1],
@@ -63,9 +63,7 @@ vals = vals.reshape(x_spline_eval_grid.shape)
 # Plot dummy data and spline surface
 fig = plt.figure()
 plt.subplots_adjust(hspace=0.5, wspace=0.4)
-# fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharex = 'none', sharey = 'none')
 ax1 = fig.add_subplot(221, projection='3d')
-# ax1.add_subplot(221, projection='3d')
 ax1.plot_surface(x_spline_eval_grid, y_spline_eval_grid, vals, antialiased = True, alpha = 0.8, cmap = cm.Blues)
 ax1.scatter(x_sample, y_sample, dummy_data.reshape(x_sample.shape), c = "red", marker = 'x')
 
@@ -92,14 +90,19 @@ ax3.set_ylabel('hess[0,0]')
 ax3.set_title("imposed BC at x = 1")
 
 ax4 = fig.add_subplot(224)
-# ax4.set_ylim(-1.5, 1.5)
 ax4.plot(x_spline_eval[::5], vals[::5, 0], 'o-')    
 ax4.plot(x_spline_eval[::5], vals[::5, -1], 'x-')
 ax4.set_xlabel("x")
 ax4.set_ylabel('value')
 ax4.set_title("periodic edges")
 
-# print((vals[1,0] - vals[0,0])/(x_spline_eval[1] - x_spline_eval[0]))
+# checking first and second derivative along periodic edges
+dy_vals = dvals[:, 1].reshape(x_spline_eval_grid.shape)
+ddy_vals = ddvals[:, 1, 1].reshape(x_spline_eval_grid.shape)
+
+assert np.allclose(dy_vals[:, 0], dy_vals[:, -1])
+assert np.allclose(ddy_vals[:, 0], ddy_vals[:, -1])
+
 plt.savefig("./tests/demo_pics/2d_spline_first-second-peri.png")
-plt.show()
+# plt.show()
 
