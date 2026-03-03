@@ -5,8 +5,8 @@ with open("README.md", "r") as f:
 
 setup(
     name = "cubicmultispline",
-    version = "0.1.1",
-    description = "Cubic multivariate spline utilities",
+    version = "0.1.0",
+    description = "Generation of cubic, multivariate splines from samples with arbitrary boundary conditions",
     package_dir={"": "src"},
     packages = find_packages(where="src"),
     long_description = long_description,
@@ -14,7 +14,7 @@ setup(
     license = "MIT License",
     author = "A. C. Feldkamp",
     author_email = "",
-    url = "",
+    url = "https://github.com/a118145/cubic-multivar-spline",
     classifiers =[
         "Programming Language :: Python :: 3.12",
         "License :: OSI Approved :: MIT License",
