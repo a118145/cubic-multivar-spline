@@ -5,7 +5,7 @@ Changelog
 -----
 - Fixed import issues which led to malfunctioning library
 - Tidied up files
-- Moved documentation to https://cubicmultispline.readthedocs.io
+- Moved documentation to <a href="https://cubicmultispline.readthedocs.io" target="_blank">https://cubicmultispline.readthedocs.io</a>
 - Shortened README.md
 
 0.1.0
