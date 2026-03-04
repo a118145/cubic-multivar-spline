@@ -53,8 +53,8 @@ The :py:meth:`~cubicmultispline.Spline.eval_spline` method returns the spline va
 The resulting spline values are reshaped to match the shape of the evaluation grid for plotting purposes. Finally, we can plot the spline surface and the sample data:
 
 .. literalinclude:: ../../tests/demo_not-a-knot.py
-   :start-after: #5s
-   :end-before: #5e
+   :start-after: #6s
+   :end-before: #6e
    :append: plt.show()
 
 The resulting plot should look similar -- not identical due to random data -- to the following. The red crosses mark the random sample values.
