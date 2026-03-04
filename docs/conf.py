@@ -15,7 +15,7 @@ print("sys.path:", sys.path)
 project = 'CubicMultiSpline'
 copyright = f'{date.today().year}, a118145'
 author = 'a118145'
-release = '0.1.0'
+release = '0.1.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
