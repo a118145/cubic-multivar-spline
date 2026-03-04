@@ -10,6 +10,7 @@ import sys, os
 from datetime import date
 
 sys.path.insert(0, os.path.abspath('../src'))
+print("sys.path:", sys.path)
 
 project = 'CubicMultiSpline'
 copyright = f'{date.today().year}, a118145'
