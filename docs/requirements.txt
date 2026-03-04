@@ -4,3 +4,4 @@ sphinx-autodoc-typehints
 sphinx-copybutton
 myst-parser
 numpy
+matplotlib
