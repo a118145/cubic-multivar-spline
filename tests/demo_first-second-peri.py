@@ -103,6 +103,6 @@ ddy_vals = ddvals[:, 1, 1].reshape(x_spline_eval_grid.shape)
 assert np.allclose(dy_vals[:, 0], dy_vals[:, -1])
 assert np.allclose(ddy_vals[:, 0], ddy_vals[:, -1])
 
-plt.savefig("./tests/demo_pics/2d_spline_first-second-peri.png")
+plt.savefig("./docs/_static/demo_pics/2d_spline_first-second-peri.png")
 # plt.show()
 

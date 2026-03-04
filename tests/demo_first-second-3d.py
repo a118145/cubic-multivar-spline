@@ -88,6 +88,6 @@ ax2.plot_surface(x_spline_eval_grid[:, 0, :], z_spline_eval_grid[:, 0, :], ddx_v
 # ax4.plot(x_spline_eval[::5], vals[::5, 0], 'o-')
 # ax4.plot(x_spline_eval[::5], vals[::5, -1], 'x-')
 
-plt.savefig("./tests/demo_pics/3d_spline_first-second.png")
+plt.savefig("./docs/_static/demo_pics/3d_spline_first-second.png")
 plt.show()
 
