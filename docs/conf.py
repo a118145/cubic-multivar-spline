@@ -35,20 +35,10 @@ intersphinx_mapping = {
 autodoc_default_options = {
     'private-members': False,
     'members': True,
-    # 'exclude-members': '__init__',
 }
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
-def autodoc_skip_member(app, what, name, obj, skip, options):
-    print(f"DEBUG: {what} {name}")
-    if name.startswith('_'):
-        return True
-    return skip
-
-def setup(app):
-    app.connect('autodoc-skip-member', autodoc_skip_member)
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

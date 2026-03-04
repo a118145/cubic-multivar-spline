@@ -19,6 +19,7 @@
 
    pages/quickstart
    pages/boundary2d
+   pages/aicontrib
 
 
 .. toctree::

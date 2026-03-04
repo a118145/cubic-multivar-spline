@@ -1,7 +1,7 @@
 *n*\-D spline class
 ===============================
 
-.. autoclass:: cubic_multivar_spline.Spline
+.. autoclass:: cubicmultispline.Spline
    :members:
    :no-private-members:
 ..    :show-inheritance:

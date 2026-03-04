@@ -285,16 +285,6 @@ class Spline1D:
         
         return result if isinstance(t, np.ndarray) else float(result)
 
-    # def eval_spline_old(self, x: float | np.ndarray) -> Tuple[float, float, float, float] | Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    #     x = np.asarray(x)
-    #     l = np.floor((x-self._a)/self._h).astype(int)
-    #     # print('l', l)
-    #     m = np.min([l+4, self._n+3])
-    #     # print('m', m)
-    #     t = ((x-self._a)/self._h-(np.arange(l+1,m+1)-2))
-    #     # print('t', t)
-    #     return np.sum(self._coeff[l:m]*Spline1D._phi(t)), np.sum(self._coeff[l:m]*Spline1D._dphi_dt(t)/self._h), np.sum(self._coeff[l:m]*Spline1D._d2phi_dt2(t)/self._h**2), np.sum(self._coeff[l:m]*Spline1D._d3phi_dt3(t)/self._h**3)
-
     def eval_spline(self, x: float | np.ndarray) -> Tuple[float, float, float, float] | Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         Evaluate the spline and its derivatives at given point(s).

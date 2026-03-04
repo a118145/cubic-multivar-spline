@@ -38,20 +38,19 @@ In order to compare the generated spline to the sample data, we can evaluate the
    :start-after: #3s
    :end-before: #3e
 
-The spline can be evaluated at any point in the domain using the :py:meth:`~cubic_multivar_spline.Spline.eval_spline` method. To achieve a smooth surface, we evaluate the spline at a finer grid:
+The spline can be evaluated at any point in the domain using the :py:meth:`~cubicmultispline.Spline.eval_spline` method. To achieve a smooth surface, we evaluate the spline at a finer grid:
 
 .. literalinclude:: ../../tests/demo_not-a-knot.py
    :start-after: #4s
    :end-before: #4e
 
-The :py:meth:`~cubic_multivar_spline.Spline.eval_spline` method returns the spline values, the gradient and the hessian for each point. In this example, we only need the spline values :code:`vals`:
+The :py:meth:`~cubicmultispline.Spline.eval_spline` method returns the spline values, the gradient and the hessian for each point. In this example, we only need the spline values :code:`vals`:
 
 .. literalinclude:: ../../tests/demo_not-a-knot.py
    :start-after: #5s
    :end-before: #5e
 
 The resulting spline values are reshaped to match the shape of the evaluation grid for plotting purposes. Finally, we can plot the spline surface and the sample data:
-
 
 .. literalinclude:: ../../tests/demo_not-a-knot.py
    :start-after: #5s

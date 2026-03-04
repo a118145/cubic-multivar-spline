@@ -22,22 +22,27 @@ ranges = [
 interval = tuple((ranges[i][0], ranges[i][1], shape[i]) for i in range(len(shape)))
 
 # boundary conditions for each dimension -> (first condition, second condition) for each dimension
+#1s
 bc = (
     ("first_derivative", "second_derivative"), 
     ("periodic", "periodic"),
     )
-
+#1e
 # boundary conditions values for each dimension -> (first condition value, second condition value) for each dimension
 # for "not-a-knot" and "periodic" boundary conditions, the values are not used
+#2s
 bc_value = (
     (1.0, -2.0), 
     (0.0, 0.0),
     )
+#2e
 
 # create dummy data and make periodic in y
 dummy_data = np.random.randn(*shape)
+#3s
 dummy_data[:, 0] = dummy_data[:, -1]
 dummy_data = dummy_data.ravel()
+#3e
 
 spline_2d = spl.Spline(interval, dummy_data, bc, bc_value)
 
@@ -96,13 +101,14 @@ ax4.set_xlabel("x")
 ax4.set_ylabel('value')
 ax4.set_title("periodic edges")
 
+#4s
 # checking first and second derivative along periodic edges
 dy_vals = dvals[:, 1].reshape(x_spline_eval_grid.shape)
 ddy_vals = ddvals[:, 1, 1].reshape(x_spline_eval_grid.shape)
 
 assert np.allclose(dy_vals[:, 0], dy_vals[:, -1])
 assert np.allclose(ddy_vals[:, 0], ddy_vals[:, -1])
-
+#4e
 plt.savefig("./docs/_static/demo_pics/2d_spline_first-second-peri.png")
 # plt.show()
 
