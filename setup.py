@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name = "cubicmultispline",
-    version = "0.1.0",
+    version = "0.1.1",
     description = "Generation of cubic, multivariate splines from samples with arbitrary boundary conditions",
     package_dir={"": "src"},
     packages = find_packages(where="src"),
@@ -24,6 +24,7 @@ setup(
     install_requires =[
         "numpy>=2.4",
         "scipy>=1.12",
+        "matplotlib>=3.10.0",
     ],
     extras_require={
         "dev": [
