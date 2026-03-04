@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Tuple
 import matplotlib.pyplot as plt
-from cubicmultispline.Spline1D import Spline1D
+from .Spline1D import Spline1D
 from itertools import product as iproduct
 
 class Spline:
