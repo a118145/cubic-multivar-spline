@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Tuple
 import matplotlib.pyplot as plt
-from cubic_multivar_spline.Spline1D import Spline1D
+from Spline1D import Spline1D
 from cubic_multivar_spline.spline_eval import eval_spline as eval_spline_ai
 
 class Spline2D:
