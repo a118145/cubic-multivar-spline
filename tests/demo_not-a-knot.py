@@ -69,7 +69,7 @@ vals = vals.reshape(x_spline_eval.shape)
 # Plot dummy data and spline surface
 fig = plt.figure()
 plt.subplots_adjust(hspace=0.5, wspace=0.4)
-ax = fig.add_subplot(121, projection='3d')
+ax = fig.add_subplot(111, projection='3d')
 ax.plot_surface(x_spline_eval, y_spline_eval, vals, antialiased = True, alpha = 0.8, cmap = cm.Blues)
 ax.scatter(x_sample, y_sample, dummy_data.reshape(x_sample.shape), c = "red", marker = 'x')
 
@@ -78,5 +78,5 @@ ax.set_ylabel('y')
 ax.set_zlabel('data')
 #6e
 plt.savefig("./docs/_static/demo_pics/2d_spline_not-a-knot.png")
-plt.show()
+# plt.show()
 
