@@ -125,10 +125,11 @@ for i in range(101):
     ax.set_title(f"Slice at z = {i/100:.2f}")
     ax.set_zlim(-2,3)
     ax.plot_surface(x_spline_eval_grid[:, :, i*step], y_spline_eval_grid[:, :, i*step], vals[:, :, i*step], cmap = "Blues") 
+    #3s
     if not i % 10:
-        # ax.scatter(x_sample[:,:,cnt], y_sample[:,:,cnt], dummy_data_orig[:,:,cnt], c = "red", marker = 'x')
         assert(np.allclose(vals[::10, ::10, i*step], dummy_data_orig[:,:,cnt]))
         cnt += 1
+    #3e
     # plt.show()
     if i == 0 and False:
         plt.axis('off')
