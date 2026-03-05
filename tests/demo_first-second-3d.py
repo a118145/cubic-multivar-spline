@@ -8,7 +8,7 @@ Preparing dummy data
 """
 
 # shape of the data -> number of points in each dimension 
-shape = (10, 10, 10)
+shape = (11, 11, 11)
 # ranges of the data -> [min, max] for each dimension       
 ranges = [ 
     [0, 1],
@@ -29,13 +29,14 @@ bc = (
 # boundary conditions values for each dimension -> (first condition value, second condition value) for each dimension
 # for "not-a-knot" and "periodic" boundary conditions, the values are not used
 bc_value = (
-    (1.0, 1.0), 
-    (1.0, 1.0),
-    (1.0, 1.0),
+    (-1.0, 1.0), 
+    (1.0, 2.0),
+    (-1.0, -3.0),
     )
 
 # create dummy data and make periodic in y
-dummy_data = np.random.randn(*shape).ravel()
+dummy_data_orig = np.random.rand(*shape)
+dummy_data = dummy_data_orig.ravel()
 
 spline_3d = spl.Spline(interval, dummy_data, bc, bc_value)
 
@@ -46,13 +47,13 @@ Preparing plotting
 # Locations of dummy_data samples
 x_sample = np.linspace(ranges[0][0], ranges[0][1], shape[0])
 y_sample = np.linspace(ranges[1][0], ranges[1][1], shape[1])
-z_sample = np.linspace(ranges[1][0], ranges[1][1], shape[1])
+z_sample = np.linspace(ranges[2][0], ranges[2][1], shape[2])
 x_sample, y_sample, z_sample = np.meshgrid(x_sample, y_sample, z_sample, indexing='ij')
 
 # Locations of spline evaluations for smooth surface
-x_spline_eval = np.linspace(ranges[0][0], ranges[0][1], shape[0]*1)
-y_spline_eval = np.linspace(ranges[1][0], ranges[1][1], shape[1]*1)
-z_spline_eval = np.linspace(ranges[1][0], ranges[1][1], shape[1]*1)
+x_spline_eval = np.linspace(ranges[0][0], ranges[0][1], (shape[0]-1)*10+1)
+y_spline_eval = np.linspace(ranges[1][0], ranges[1][1], (shape[1]-1)*10+1)
+z_spline_eval = np.linspace(ranges[2][0], ranges[2][1], (shape[2]-1)*10+1)
 x_spline_eval_grid, y_spline_eval_grid, z_spline_eval_grid = np.meshgrid(x_spline_eval, y_spline_eval, z_spline_eval, indexing='ij')
 
 # Spline evaluation
@@ -61,7 +62,8 @@ vals, dvals, ddvals = spline_3d.eval_spline(coords)
 vals = vals.reshape(x_spline_eval_grid.shape)
 
 # Plot dummy data and spline surface
-fig = plt.figure()
+fig = plt.figure(figsize=(5,4), dpi = 300)
+plt.subplots_adjust(hspace=0.2, wspace=0.6)
 # fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharex = 'none', sharey = 'none')
 # ax1 = fig.add_subplot(221, projection='3d')
 # # ax1.add_subplot(221, projection='3d')
@@ -72,22 +74,59 @@ fig = plt.figure()
 # ax1.set_ylabel('y')
 # ax1.set_zlabel('data')
 
-ax1 = fig.add_subplot(311, projection = '3d')
-dx_vals = dvals[:, 0].reshape(x_spline_eval_grid.shape)
-ddx_vals = ddvals[:, 0, 0].reshape(x_spline_eval_grid.shape)
-ax1.plot_surface(y_spline_eval_grid[0, :, :], z_spline_eval_grid[0, :, :], dx_vals[0, :, :])
-ax1.plot_surface(y_spline_eval_grid[0, :, :], z_spline_eval_grid[0, :, :], ddx_vals[-1, :, :])
+ax1 = fig.add_subplot(221, projection = '3d')
+d_vals = dvals[:, 0].reshape(x_spline_eval_grid.shape)
+dd_vals = ddvals[:, 0, 0].reshape(x_spline_eval_grid.shape)
+ax1.plot_surface(y_spline_eval_grid[0, :, :], z_spline_eval_grid[0, :, :], d_vals[0, :, :], color = "blue")
+ax1.plot_surface(y_spline_eval_grid[0, :, :], z_spline_eval_grid[0, :, :], dd_vals[-1, :, :], color = "red")
+# ax1.set_zlim(bc_value[0][0]-0.5, bc_value[0][1]+0.5)
+ax1.set_xlabel("y")
+ax1.set_ylabel("z")
+ax1.set_zlabel("grad[0], hess[0,0]")
+ax1.view_init(elev=30, azim = 220)
 
-ax2 = fig.add_subplot(312, projection = '3d')
-dx_vals = dvals[:, 1].reshape(x_spline_eval_grid.shape)
-ddx_vals = ddvals[:, 1, 1].reshape(x_spline_eval_grid.shape)
-ax2.plot_surface(x_spline_eval_grid[:, 0, :], z_spline_eval_grid[:, 0, :], dx_vals[:, 0, :])
-ax2.plot_surface(x_spline_eval_grid[:, 0, :], z_spline_eval_grid[:, 0, :], ddx_vals[:, -1, :])
+ax2 = fig.add_subplot(222, projection = '3d')
+d_vals = dvals[:, 1].reshape(x_spline_eval_grid.shape)
+dd_vals = ddvals[:, 1, 1].reshape(x_spline_eval_grid.shape)
+ax2.plot_surface(x_spline_eval_grid[:, 0, :], z_spline_eval_grid[:, 0, :], d_vals[:, 0, :], color = "blue")
+ax2.plot_surface(x_spline_eval_grid[:, 0, :], z_spline_eval_grid[:, 0, :], dd_vals[:, -1, :], color = "red")
+# ax2.set_zlim(-1.5, 1.5)
+ax2.set_xlabel("x")
+ax2.set_ylabel("z")
+ax2.set_zlabel("grad[1], hess[1,1]")
+ax2.view_init(elev=30, azim = 220)
 
-# ax4 = fig.add_subplot(224)
-# ax4.plot(x_spline_eval[::5], vals[::5, 0], 'o-')
-# ax4.plot(x_spline_eval[::5], vals[::5, -1], 'x-')
+ax3 = fig.add_subplot(223, projection = '3d')
+d_vals = dvals[:, 2].reshape(x_spline_eval_grid.shape)
+dd_vals = ddvals[:, 2, 2].reshape(x_spline_eval_grid.shape)
+ax3.plot_surface(x_spline_eval_grid[:, :, 0], y_spline_eval_grid[:, :, 0], d_vals[:, :, 0], color = "blue")
+ax3.plot_surface(x_spline_eval_grid[:, :, 0], y_spline_eval_grid[:, :, 0], dd_vals[:, :, -1], color = "red")
+# ax3.set_zlim(-1.5, 1.5)
+ax3.set_xlabel("x")
+ax3.set_ylabel("y")
+ax3.set_zlabel("grad[2], hess[2,2]")
+ax3.view_init(elev=30, azim = 220)
 
 plt.savefig("./docs/_static/demo_pics/3d_spline_first-second.png")
-plt.show()
+# plt.show()
+step = 1
+cnt = 0
+for i in range(101):
+    print(f"Plotting {i}")
+    fig2 = plt.figure(figsize=(5,4), dpi = 300)
+    ax = fig2.add_subplot(111, projection = '3d')
+    ax.view_init(elev=30, azim = 220)
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("val ∈ [0, 1)")
+    ax.set_title(f"Slice at z = {i/100:.2f}")
+    ax.set_zlim(-2,3)
+    ax.plot_surface(x_spline_eval_grid[:, :, i*step], y_spline_eval_grid[:, :, i*step], vals[:, :, i*step], cmap = "Blues") 
+    if not i % 10:
+        # ax.scatter(x_sample[:,:,cnt], y_sample[:,:,cnt], dummy_data_orig[:,:,cnt], c = "red", marker = 'x')
+        assert(np.allclose(vals[::10, ::10, i*step], dummy_data_orig[:,:,cnt]))
+        cnt += 1
+    # plt.show()
+    plt.savefig(f"./docs/_static/demo_gifs/3d_spline_first-second_{i}.png")
+
 

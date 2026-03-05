@@ -18,7 +18,7 @@
    :hidden:
 
    pages/quickstart
-   pages/boundary2d
+   pages/examples
    pages/aicontrib
    pages/changelog
 
