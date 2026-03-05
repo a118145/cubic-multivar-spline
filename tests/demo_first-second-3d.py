@@ -7,6 +7,7 @@ from matplotlib import cm
 Preparing dummy data 
 """
 
+#1s
 # shape of the data -> number of points in each dimension 
 shape = (11, 11, 11)
 # ranges of the data -> [min, max] for each dimension       
@@ -33,6 +34,7 @@ bc_value = (
     (1.0, 2.0),
     (-1.0, -3.0),
     )
+#1e
 
 # create dummy data and make periodic in y
 dummy_data_orig = np.random.rand(*shape)
@@ -66,10 +68,20 @@ fig = plt.figure(figsize=(5,5), dpi = 300)
 plt.subplots_adjust(hspace=0.6, wspace=0.6)
 
 ax1 = fig.add_subplot(221, projection = '3d')
+#2s
 d_vals = dvals[:, 0].reshape(x_spline_eval_grid.shape)
 dd_vals = ddvals[:, 0, 0].reshape(x_spline_eval_grid.shape)
-ax1.plot_surface(y_spline_eval_grid[0, :, :], z_spline_eval_grid[0, :, :], d_vals[0, :, :], color = "blue")
-ax1.plot_surface(y_spline_eval_grid[0, :, :], z_spline_eval_grid[0, :, :], dd_vals[-1, :, :], color = "red")
+ax1.plot_surface(
+    y_spline_eval_grid[0, :, :], # all y values at x = 0 (first index = 0)
+    z_spline_eval_grid[0, :, :], # all z values at x = 0 (first index = 0)
+    d_vals[0, :, :],             # first order partial derivative w.r.t. x at x = 0
+    color = "blue")
+ax1.plot_surface(
+    y_spline_eval_grid[-1, :, :], # all y values at x = 1 (first index = -1)
+    z_spline_eval_grid[-1, :, :], # all z values at x = 1 (first index = -1)
+    dd_vals[-1, :, :],            # second order partial derivative w.r.t. x at x = 1 
+    color = "red")
+#2e
 ax1.set_xlabel("y")
 ax1.set_ylabel("z")
 ax1.set_zlabel("grad[0], hess[0,0]")
@@ -80,7 +92,7 @@ ax2 = fig.add_subplot(222, projection = '3d')
 d_vals = dvals[:, 1].reshape(x_spline_eval_grid.shape)
 dd_vals = ddvals[:, 1, 1].reshape(x_spline_eval_grid.shape)
 ax2.plot_surface(x_spline_eval_grid[:, 0, :], z_spline_eval_grid[:, 0, :], d_vals[:, 0, :], color = "blue")
-ax2.plot_surface(x_spline_eval_grid[:, 0, :], z_spline_eval_grid[:, 0, :], dd_vals[:, -1, :], color = "red")
+ax2.plot_surface(x_spline_eval_grid[:, -1, :], z_spline_eval_grid[:, -1, :], dd_vals[:, -1, :], color = "red")
 ax2.set_xlabel("x")
 ax2.set_ylabel("z")
 ax2.set_zlabel("grad[1], hess[1,1]")
@@ -91,7 +103,7 @@ ax3 = fig.add_subplot(223, projection = '3d')
 d_vals = dvals[:, 2].reshape(x_spline_eval_grid.shape)
 dd_vals = ddvals[:, 2, 2].reshape(x_spline_eval_grid.shape)
 ax3.plot_surface(x_spline_eval_grid[:, :, 0], y_spline_eval_grid[:, :, 0], d_vals[:, :, 0], color = "blue")
-ax3.plot_surface(x_spline_eval_grid[:, :, 0], y_spline_eval_grid[:, :, 0], dd_vals[:, :, -1], color = "red")
+ax3.plot_surface(x_spline_eval_grid[:, :, -1], y_spline_eval_grid[:, :, -1], dd_vals[:, :, -1], color = "red")
 ax3.set_xlabel("x")
 ax3.set_ylabel("y")
 ax3.set_zlabel("grad[2], hess[2,2]")
@@ -118,11 +130,11 @@ for i in range(101):
         assert(np.allclose(vals[::10, ::10, i*step], dummy_data_orig[:,:,cnt]))
         cnt += 1
     # plt.show()
-    if i == 0:
+    if i == 0 and False:
         plt.axis('off')
         plt.savefig(f"./docs/_static/3d_spline_first-second_logo.png", transparent=True)
         plt.axis('on')
-    plt.savefig(f"./docs/_static/demo_gifs/3d_spline_first-second_{i}.png", transparent=False)
+    # plt.savefig(f"./docs/_static/demo_gifs/3d_spline_first-second_{i}.png", transparent=False)
     plt.close()
 
 

@@ -1,6 +1,37 @@
-3D example
-======================
+.. _boundary3d:
 
+3D example -- scalar field
+==========================
+
+As soon as a 3-dimensional field is interpolated, visualization is not straightforward anymore. They typically occur in mechanics as for example in stress, strain or displacement fields. While the former fields are represented by higher order tensors, this example interpolates a scalar, random field using clamped and natural boundary conditions in each dimension. The extension to multidimensional fields is achieved by employing a multidimensional spline interpolation for each field coordinate. 
+
+Preparation
+-----------------
+
+The 3-dimensional example is constructed in a unit cube domain and uses the following boundary conditions: 
+
+.. literalinclude:: ../../tests/demo_first-second-3d.py
+   :start-after: #1s
+   :end-before: #1e
+
+The values are arbitrarily chosen, yet, different from each other to verify that they are applied in the correct dimension. The data preparation and spline evaluation is analogue to the :ref:`quickstart case <quickstart-data>`.
+
+Boundary condition verification
+-------------------------------
+
+The imposed boundary conditions are verified by inspecting each of the six sides of the unit cube and plotting the first and second derivative as specified. The code for preparing the :math:`x`-direction plots reads
+
+.. literalinclude:: ../../tests/demo_first-second-3d.py
+   :start-after: #2s
+   :end-before: #2e
+
+
+.. image:: ../_static/demo_pics/3d_spline_first-second.png
+   :alt: slices
+   :align: center
+
+Volumetric swipe
+-------------------
 
 .. image:: ../_static/demo_gifs/slices.gif
    :alt: slices
@@ -23,8 +54,6 @@
 .. .. literalinclude:: ../../tests/demo_first-second-peri.py
 ..    :start-after: #2s
 ..    :end-before: #2e
-
-.. .. note::
 
 ..     In case of a periodic boundary constraint, both edges of the domain are periodic. This is checked inside :py:class:`~cubicmultispline.Spline1D` and corrected if necessary, i.e., all values inside the tuple of the corresponding dimension are set to ``"periodic"``. **The boundary condition values are not of any meaning in this case**.
 

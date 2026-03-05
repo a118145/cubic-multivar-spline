@@ -3,7 +3,9 @@ Quickstart
 
 This section serves as quick demo how to use the library. The presented example can be found in the tests directory of the `repository`_ inside :code:`demo_not-a-knot.py`.
 
-.. _repository: https://https://github.com/a118145/cubic-multivar-spline/
+.. _repository: https://github.com/a118145/cubic-multivar-spline/
+
+.. _quickstart-data:
 
 Data preparation
 --------------------

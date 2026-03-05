@@ -1,7 +1,10 @@
-Boundary conditions
-======================
+.. _boundary2d:
+
+2D example -- scalar field
+=================================
 
 Besides the generation of splines of arbitrary dimension, another core feature of this library is the support for various boundary conditions for different dimensions.
+
 .. The library provides two additional examples in the ``tests`` directory:
 
 .. 1. ``demo_first-second-peri.py``: 2D spline with clamped and natural boundary conditions in the x-direction and periodicity in the y-direction
