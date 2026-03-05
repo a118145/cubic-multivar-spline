@@ -1,16 +1,6 @@
 # CubicMultiSpline documentation
 Library for cubic, **multivariate spline interpolation** from samples with **arbitrary boundary conditions for each dimension**. The full documentation can be found at <a href="https://cubicmultispline.readthedocs.io" target="_blank">https://cubicmultispline.readthedocs.io</a>.
 
-<!-- ## Contents
-
-- [Overview](#overview)
-- [Installation](#installation)
-- [Usage](#usage)
-    - [Data preparation](#data-preparation)
-    - [Spline generation and inspection](#spline-generation-and-inspection)
-- [Further examples](#further-examples)
-- [License](#license) -->
-
 ## Overview
 This library implements the recursive algorithm by <a href="https://link.springer.com/article/10.1007/s10614-007-9092-4" target="_blank">Habermann and Kindermann</a> in the `Spline` class. The 1-dimensional base case, which is needed during recursion is implemented in the `Spline1D` class. In contrast to other multivariate spline implementations, this library allows for arbitrary boundary conditions for each dimension, that is
 1. not-a-knot
