@@ -46,3 +46,10 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'furo'
 html_static_path = ['_static']
+# html_logo = '_static/demo_gifs/slices.gif'
+html_logo = '_static/logo.png'
+html_title = ''
+html_short_title = ''
+html_theme_options = {
+    'sidebar_hide_name': True,
+}
