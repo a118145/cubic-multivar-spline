@@ -5,6 +5,13 @@ The examples in this section demonstrate detailed use cases of the library. Apar
 
 .. _repository: https://github.com/a118145/cubic-multivar-spline/
 
+.. admonition:: :ref:`Quickstart: 2D example -- scalar field with uniform boundary conditions <quickstart>`
+   :class: information
+
+   * ``tests/demo_not-a-knot.py``
+   * 2D interpolation of a scalar field of random, equidistant samples with not-a-knot boundary conditions
+   * Visual inspection of interpolation 
+
 .. admonition:: :ref:`2D example -- scalar field <boundary2d>`
    :class: note
 
