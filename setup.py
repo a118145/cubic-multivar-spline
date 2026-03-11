@@ -31,6 +31,7 @@ setup(
             "twine>=6.2",
             "setuptools>=82.0.0",
             "matplotlib>=3.10.0",
+            "pytest>=8.0",
         ]
     },
 )
