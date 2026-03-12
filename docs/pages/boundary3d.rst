@@ -10,7 +10,7 @@ Preparation
 
 The 3-dimensional example is constructed in a unit cube domain and uses the following boundary conditions: 
 
-.. literalinclude:: ../../tests/demo_first-second-3d.py
+.. literalinclude:: ../../tests/demos/demo_first-second-3d.py
    :start-after: #1s
    :end-before: #1e
 
@@ -21,7 +21,7 @@ Boundary condition verification
 
 The imposed boundary conditions are verified by inspecting each of the six sides of the unit cube and plotting the first and second derivative as specified. The code for preparing the :math:`x`-direction plots reads
 
-.. literalinclude:: ../../tests/demo_first-second-3d.py
+.. literalinclude:: ../../tests/demos/demo_first-second-3d.py
    :start-after: #2s
    :end-before: #2e
 
@@ -36,7 +36,7 @@ Volumetric swipe
 
 A volumetric comparison of the spline evaluation to the original sample data is achieved as follows. The spline is evaluated on a :math:`101^3` grid, while the samples are given on a :math:`11^3` grid. Since the grid numbers include start and end point, every 10th point on the evaluation grid shares the same location as a original sample. The code snipped reads as follows: 
 
-.. literalinclude:: ../../tests/demo_first-second-3d.py
+.. literalinclude:: ../../tests/demos/demo_first-second-3d.py
    :dedent:
    :start-after: #3s
    :end-before:  #3e

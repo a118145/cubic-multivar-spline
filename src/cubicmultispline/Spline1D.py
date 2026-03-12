@@ -31,7 +31,7 @@ class Spline1D:
         _a: Start value of the interval
     """
 
-    def __init__(self, interval: Tuple[float, float], yv: np.ndarray, boundary_condition_type: Tuple[str, str] = ("second_derivative", "second_derivative"), boundary_condition_value: Tuple[float, float] = (0.0, 0.0) ) -> None:
+    def __init__(self, interval: Tuple[float, float], yv: np.ndarray, boundary_condition_type: Tuple[str, str] = ("not-a-knot", "not-a-knot"), boundary_condition_value: Tuple[float, float] = (0.0, 0.0) ) -> None:
         """
         Initialize a 1D cubic spline interpolator.
         
@@ -44,7 +44,7 @@ class Spline1D:
         boundary_condition_type : Tuple[str, str], optional
             Boundary conditions for (start, end) of the interval.
             Options: "not-a-knot", "periodic", "first_derivative", "second_derivative"
-            Default: ("second_derivative", "second_derivative")
+            Default: ("not-a-knot", "not-a-knot")
         boundary_condition_value : Tuple[float, float], optional
             Values for the boundary conditions. For derivative conditions,
             these are the derivative values at the boundaries.
