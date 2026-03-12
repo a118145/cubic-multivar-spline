@@ -1,6 +1,15 @@
 AI contribution
 =================
 
+v0.1.2
+------
+- Refactoring of test suite
+- Porting of numpy implementation to PyTorch
+- Adding new tests for PyTorch implementation
+
+v0.1.1
+------
+
 The vast majority of the docstrings and some of the code in this library were partly or fully written by AI. The Claude chatbot (Sonnet 4.6) from Antropic was used. The following list provides an overview of the files or parts thereof where code was created or significantly modified by AI:
 
 - :py:meth:`cubicmultispline.Spline1D.eval_spline`: AI-modified based on non-vectorized version 
