@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name = "cubicmultispline",
-    version = "0.1.1",
+    version = "0.1.2",
     description = "Generation of cubic, multivariate splines from samples with arbitrary boundary conditions",
     package_dir={"": "src"},
     packages = find_packages(where="src"),
@@ -32,6 +32,9 @@ setup(
             "setuptools>=82.0.0",
             "matplotlib>=3.10.0",
             "pytest>=8.0",
-        ]
+        ],
+        "torch": [
+            "torch>=2.0",
+        ],
     },
 )
