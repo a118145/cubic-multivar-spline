@@ -30,4 +30,6 @@
 
    autodoc/spline
    autodoc/spline1d
+   autodoc/splinetorch
+   autodoc/spline1dtorch
 

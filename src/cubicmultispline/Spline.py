@@ -153,7 +153,7 @@ class Spline:
         # print('##########')
         # print(f"Level {len(interval)}")
         # print(interval)
-        if len(interval) is 1:
+        if len(interval) == 1:
             # lowest level of recursion reached -> 1D spline
             coeff = Spline1D(interval[0], yv, boundary_condition_type[0], boundary_condition_value[0]).coeff 
             return coeff

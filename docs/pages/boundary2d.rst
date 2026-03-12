@@ -5,20 +5,20 @@
 
 Besides the generation of splines of arbitrary dimension, another core feature of this library is the support for various boundary conditions in different dimensions.
 
-.. The library provides two additional examples in the ``tests`` directory:
+.. The library provides two additional examples in the ``tests/demos`` directory:
 
 .. 1. ``demo_first-second-peri.py``: 2D spline with clamped and natural boundary conditions in the x-direction and periodicity in the y-direction
 .. 2. ``demo_first-second-3d.py``: 3D spline with first and second order boundary conditions
 
 In the following, a 2-dimensional case is discussed in detail. The data is prepared in the same manner as before. However, the boundary conditions are different. In this case, we use clamped and natural boundary conditions in the :math:`x`-direction at :math:`x=0` and  :math:`x=1`, respectively, and periodicity in the :math:`y`-direction: 
 
-.. literalinclude:: ../../tests/demo_first-second-peri.py
+.. literalinclude:: ../../tests/demos/demo_first-second-peri.py
    :start-after: #1s
    :end-before: #1e
 
 The following values are specified:
 
-.. literalinclude:: ../../tests/demo_first-second-peri.py
+.. literalinclude:: ../../tests/demos/demo_first-second-peri.py
    :start-after: #2s
    :end-before: #2e
 
@@ -28,7 +28,7 @@ The following values are specified:
 
 In addition to the differing boundary conditions, the dummy data has to be periodic in the dimension where periodicity is imposed. This is done by setting the first and last value of the dummy data to be equal:
 
-.. literalinclude:: ../../tests/demo_first-second-peri.py
+.. literalinclude:: ../../tests/demos/demo_first-second-peri.py
    :start-after: #3s
    :end-before: #3e
 
@@ -42,6 +42,6 @@ In addition to the 3-dimensional view of the spline surface, the boundary condit
 
 The periodic edges :math:`y = \lbrace 0, 0.8 \rbrace \cap x \in [0, 1]` are inspected by means of the values along the left and right edge of the domain -- they are equal as required by periodicity. The first and second derivative along the :math:`y`-direction (normal to the periodic edges) are checked separately: 
 
-.. literalinclude:: ../../tests/demo_first-second-peri.py
+.. literalinclude:: ../../tests/demos/demo_first-second-peri.py
    :start-after: #4s
    :end-before: #4e
